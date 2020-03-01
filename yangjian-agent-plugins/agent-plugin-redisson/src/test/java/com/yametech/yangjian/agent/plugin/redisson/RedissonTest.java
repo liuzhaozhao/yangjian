@@ -30,12 +30,16 @@ public class RedissonTest {
     @org.junit.Test
     public void test() {
         Config config = new Config();
-        config.useSingleServer().setAddress("127.0.0.1:6379");
+        config.useClusterServers().addNodeAddress("10.1.1.232:7016", "10.1.1.232:7017", 
+        		"10.1.1.232:7018", "10.1.1.232:7019", "10.1.1.232:7020", "10.1.1.232:7021")
+        		.setPassword("5PXDCyMp^NsjG2!NG");
+//        config.useSingleServer().setAddress("127.0.0.1:6379");
         RedissonClient redisson = Redisson.create(config);
         RBucket<Object> result = redisson.getBucket("key3");
         result.set("gg", 5, TimeUnit.MINUTES);
+        System.err.println(result.get());
         RSet r = redisson.getSet("key5");
-        r.size();
+        System.err.println(r.size());
         RLock rLock = redisson.getLock("tlock");
         try {
             rLock.tryLock(1, 1, TimeUnit.SECONDS);
